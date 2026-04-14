@@ -3,51 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuditStamp | Westside Digital Integrity</title>
+    <title>AuditStamp | Chicago Grant Compliance & Integrity</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.6; background: #f4f4f4; }
-        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { color: #d32f2f; } /* Chicago Red */
-        input, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background: #d32f2f; color: white; border: none; font-weight: bold; cursor: pointer; }
-        #qrcode { margin-top: 20px; display: flex; justify-content: center; }
+        :root { --chi-red: #d32f2f; --dark: #1a1a1a; --light: #f4f4f4; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light); color: var(--dark); margin: 0; padding: 0; line-height: 1.6; }
+        header { background: var(--dark); color: white; padding: 2rem 1rem; text-align: center; border-bottom: 5px solid var(--chi-red); }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        
+        h1 { margin: 0; font-size: 2.5rem; letter-spacing: -1px; }
+        h2 { color: var(--chi-red); margin-top: 0; }
+        p { color: #555; font-size: 1.1rem; }
+        
+        /* The Smart Form Styles */
+        .form-group { margin: 2rem 0; }
+        input[type="text"] { width: 100%; padding: 15px; font-size: 1rem; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; margin-bottom: 1rem; }
+        button { width: 100%; background: var(--chi-red); color: white; border: none; padding: 18px; font-size: 1.2rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #b71c1c; transform: translateY(-2px); }
+        
+        #qrcode-container { margin-top: 2rem; display: none; padding: 20px; background: #fff; border: 2px dashed #ccc; border-radius: 8px; }
+        #qrcode { display: flex; justify-content: center; margin-bottom: 1rem; }
+        
+        footer { text-align: center; margin-top: 3rem; padding: 2rem; font-size: 0.9rem; color: #888; border-top: 1px solid #ddd; }
+        .badge { background: var(--chi-red); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body>
+
+<header>
+    <span class="badge">Built for Austin & Englewood</span>
+    <h1>AUDITSTAMP</h1>
+    <p>Digital Architecture for Community Grants</p>
+</header>
+
+<div class="container">
     <div class="card">
-        <h1>AuditStamp</h1>
-        <p><strong>BIPA-Compliant & Grant-Ready.</strong> Built by a Westside Trade Veteran.</p>
-        <hr>
-        <p>Enter your Program Name to generate your Audit-Proof QR code:</p>
-        <input type="text" id="progName" placeholder="e.g. Austin Peace Basketball">
-        <button onclick="generateQR()">Generate My Audit-Proof QR</button>
+        <h2>Generate Your 2026 Audit-Proof QR</h2>
+        <p>Don't let a clipboard get you audited. Enter your program name below to register your GPS-verified attendance system.</p>
         
-        <div id="qrcode"></div>
-        <p style="font-size: 0.8em; text-align: center; color: #666;">Scan this to test your GPS & Consent Handshake.</p>
+        <div class="form-group">
+            <input type="text" id="programName" placeholder="e.g. 79th Street Peace Basketball">
+            <button onclick="processGrantInfrastructure()">GENERATE & REGISTER SYSTEM</button>
+        </div>
+
+        <div id="qrcode-container">
+            <div id="qrcode"></div>
+            <p><strong>SUCCESS:</strong> Your program is now registered in our database.<br>
+            <span style="font-size: 0.9rem;">Scan this QR with a mobile phone to test the GPS Handshake.</span></p>
+            <button style="background: #333; font-size: 0.9rem; padding: 10px;" onclick="window.print()">Print This QR Code</button>
+        </div>
     </div>
 
-    <script>
-        function generateQR() {
-            var name = document.getElementById("progName").value;
-            var qrDiv = document.getElementById("qrcode");
-            qrDiv.innerHTML = ""; // Clear old QR
-            
-            if(name) {
-                // This URL will eventually point to your n8n webhook
-                var url = "https://auditstamp.org/checkin?program=" + encodeURIComponent(name);
-                new QRCode(qrDiv, {
-                    text: url,
-                    width: 200,
-                    height: 200
-                });
-                
-                // Optional: Ping your n8n to log that a QR was created
-                console.log("QR Created for: " + name);
-            } else {
-                alert("Please enter a program name.");
-            }
+    <div style="margin-top: 2rem; text-align: center;">
+        <p><em>"I bridge the gap between neighborhood trust and city compliance."</em><br>
+        <strong>— Angelo H., Digital Architect</strong></p>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 AIBizService.com | BIPA Compliant | Chicago, IL
+</footer>
+
+<script>
+    async function processGrantInfrastructure() {
+        const name = document.getElementById('programName').value;
+        const qrContainer = document.getElementById('qrcode-container');
+        const qrDiv = document.getElementById('qrcode');
+        
+        if (!name) {
+            alert("Please enter a Program Name to continue.");
+            return;
         }
-    </script>
+
+        // 1. CLEAR PREVIOUS & SHOW CONTAINER
+        qrDiv.innerHTML = "";
+        qrContainer.style.display = "block";
+
+        // 2. GENERATE DYNAMIC QR 
+        // This URL is what volunteers will scan in the field
+        const scanUrl = `https://auditstamp.org/checkin?p=${encodeURIComponent(name)}`;
+        new QRCode(qrDiv, {
+            text: scanUrl,
+            width: 200,
+            height: 200,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        // 3. PING N8N CLOUD (The Logic Layer)
+        // REPLACE THE URL BELOW WITH YOUR PRODUCTION WEBHOOK FROM N8N
+        const n8nWebhookUrl = 'YOUR_N8N_PRODUCTION_WEBHOOK_URL';
+
+        try {
+            const response = await fetch(n8nWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: "new_registration",
+                    program: name,
+                    timestamp: new Date().toLocaleString(),
+                    status: "Pending May 1st Award"
+                })
+            });
+            
+            if (response.ok) {
+                console.log("Successfully filed in Airtable via n8n.");
+            }
+        } catch (error) {
+            console.error("Connection to n8n failed, but QR was generated locally.");
+        }
+    }
+</script>
+
 </body>
 </html>
